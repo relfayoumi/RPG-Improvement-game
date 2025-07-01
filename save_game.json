@@ -1,0 +1,41 @@
+{
+    "xp": 2,
+    "coins": 2,
+    "title": "Novice",
+    "current_level": 0,
+    "punishment_sum": 0,
+    "xp_boost_pending": 0,
+    "coin_gain_multiplier": 1.0,
+    "punishment_mitigation_pending": false,
+    "pets": [],
+    "quests": [],
+    "daily_tasks_completed": 2,
+    "last_daily_reset_date": "2025-07-01",
+    "skills": {},
+    "pet_cooldowns": {},
+    "play_cooldowns": {},
+    "transcendence_buff_end_time": null,
+    "daily_tasks": {
+        "Wash your face": true,
+        "Brush your teeth": true
+    },
+    "pet_food": 0,
+    "corruption": 0,
+    "daily_streak": 0,
+    "unlocked_titles": [
+        "Novice"
+    ],
+    "active_title": null,
+    "gear": {
+        "Helmet": null,
+        "Chest": null,
+        "Weapon": null,
+        "Boots": null
+    },
+    "inventory": [],
+    "achievements": [],
+    "transcendence_count": 0,
+    "main_quests_completed": 0,
+    "custom_punishments": [],
+    "last_workout_type": null
+}

@@ -1,206 +1,31 @@
 {
-    "xp": 351,
-    "coins": 107,
-    "title": "300 XP - Master",
-    "current_level": 300,
+    "xp": 856,
+    "coins": 132,
+    "title": "750 XP - Legend",
+    "current_level": 750,
     "punishment_sum": 0,
     "xp_boost_pending": 0,
     "coin_gain_multiplier": 1.0,
     "punishment_mitigation_pending": false,
     "pets": [],
-    "quests": [
-        {
-            "name": "Workout: 4x12 Shoulder Press",
-            "description": "Part of your Difficult Strength (Upper Body) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Upper",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.626978",
-            "steps": "1. Perform 4 sets of 12 reps of Shoulder Press.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Rows",
-            "description": "Part of your Difficult Strength (Upper Body) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Upper",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.626978",
-            "steps": "1. Perform 4 sets of 12 reps of Rows.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Pushups",
-            "description": "Part of your Difficult Strength (Upper Body) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Upper",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.626978",
-            "steps": "1. Perform 4 sets of 12 reps of Pushups.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Lateral Raises",
-            "description": "Part of your Difficult Strength (Upper Body) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Upper",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.626978",
-            "steps": "1. Perform 4 sets of 12 reps of Lateral Raises.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Pike Shrugs",
-            "description": "Part of your Difficult Strength (Upper Body) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Upper",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.626978",
-            "steps": "1. Perform 4 sets of 12 reps of Pike Shrugs.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Pike Pushups",
-            "description": "Part of your Difficult Strength (Upper Body) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Upper",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.626978",
-            "steps": "1. Perform 4 sets of 12 reps of Pike Pushups.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Leg Raises",
-            "description": "Part of your Difficult Strength (Core) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Core",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.362290",
-            "steps": "1. Perform 4 sets of 12 reps of Leg Raises.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Russian Twists",
-            "description": "Part of your Difficult Strength (Core) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Core",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.362290",
-            "steps": "1. Perform 4 sets of 12 reps of Russian Twists.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Weighted Sit-ups",
-            "description": "Part of your Difficult Strength (Core) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Core",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.362290",
-            "steps": "1. Perform 4 sets of 12 reps of Weighted Sit-ups.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Workout: 4x12 Weighted Russian Twists",
-            "description": "Part of your Difficult Strength (Core) workout plan.",
-            "xp_reward": 5,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Strength",
-                "amount": 10
-            },
-            "workout_type": "Core",
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.362290",
-            "steps": "1. Perform 4 sets of 12 reps of Weighted Russian Twists.\n2. Mark quest as complete."
-        },
-        {
-            "name": "Endurance: Swim (30 mins)",
-            "description": "Part of your Difficult Endurance workout plan.",
-            "xp_reward": 225,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Endurance",
-                "amount": 113
-            },
-            "duration_target": 30,
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.602485",
-            "steps": "1. Perform Swim for 30 minutes.\n2. Mark quest as complete and enter duration completed."
-        },
-        {
-            "name": "Endurance: Cycling (30 mins)",
-            "description": "Part of your Difficult Endurance workout plan.",
-            "xp_reward": 225,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Endurance",
-                "amount": 113
-            },
-            "duration_target": 30,
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.602485",
-            "steps": "1. Perform Cycling for 30 minutes.\n2. Mark quest as complete and enter duration completed."
-        },
-        {
-            "name": "Endurance: Shadow Boxing (30 mins)",
-            "description": "Part of your Difficult Endurance workout plan.",
-            "xp_reward": 225,
-            "coin_reward": 0,
-            "skill_reward": {
-                "skill": "Endurance",
-                "amount": 113
-            },
-            "duration_target": 30,
-            "quest_type": "main",
-            "due_date": "2025-07-02T02:00:00.602485",
-            "steps": "1. Perform Shadow Boxing for 30 minutes.\n2. Mark quest as complete and enter duration completed."
-        }
-    ],
-    "daily_tasks_completed": 19,
+    "quests": [],
+    "daily_tasks_completed": 37,
     "last_daily_reset_date": "2025-07-01",
     "skills": {
         "Strength": {
-            "xp": 40,
+            "xp": 140,
             "last_updated": "2025-07-01"
         },
         "Endurance": {
+            "xp": 225,
+            "last_updated": "2025-07-01"
+        },
+        "Charisma": {
             "xp": 0,
+            "last_updated": "2025-07-01"
+        },
+        "Intellect": {
+            "xp": 10,
             "last_updated": "2025-07-01"
         }
     },
@@ -208,9 +33,13 @@
     "play_cooldowns": {},
     "transcendence_buff_end_time": null,
     "daily_tasks": {
-        "Wash your face": false,
+        "Wash your face": true,
         "Brush your teeth": false,
-        "Make your bed": false
+        "Make your bed": false,
+        "Shower": true,
+        "Work on a project": true,
+        "Plan your day": true,
+        "Tidy room for 5 mins": true
     },
     "pet_food": 0,
     "corruption": 0,
@@ -220,9 +49,13 @@
         "Indomitable",
         "Diligent",
         "Zealot",
-        "Workhorse"
+        "Workhorse",
+        "Sage",
+        "Ascended",
+        "Legendary Quester",
+        "Prodigy"
     ],
-    "active_title": "Workhorse",
+    "active_title": "Diligent",
     "gear": {
         "Helmet": null,
         "Chest": null,
@@ -251,15 +84,60 @@
                 "Durability": 300
             },
             "type": "Chest"
+        },
+        {
+            "name": "Blade of Prosperity",
+            "buff": {
+                "type": "coin_gain",
+                "value": 0.1
+            },
+            "requirements": {
+                "Strength": 250
+            },
+            "type": "Weapon"
+        },
+        {
+            "name": "Dragonhide Armor",
+            "buff": {
+                "type": "durability_xp_gain",
+                "value": 0.12
+            },
+            "requirements": {
+                "Durability": 500
+            },
+            "type": "Chest"
+        },
+        {
+            "name": "Blade of Prosperity",
+            "buff": {
+                "type": "coin_gain",
+                "value": 0.1
+            },
+            "requirements": {
+                "Strength": 250
+            },
+            "type": "Weapon"
+        },
+        {
+            "name": "Sacred Relic",
+            "buff": {
+                "type": "faith_xp_gain",
+                "value": 0.12
+            },
+            "requirements": {
+                "Faith": 450
+            },
+            "type": "Weapon"
         }
     ],
     "achievements": [
         "first_steps",
         "daily_master",
-        "corruption_cleanse"
+        "corruption_cleanse",
+        "skill_master"
     ],
     "transcendence_count": 0,
-    "main_quests_completed": 6,
+    "main_quests_completed": 19,
     "custom_punishments": [],
-    "last_workout_type": "Endurance"
+    "last_workout_type": "Upper"
 }

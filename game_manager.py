@@ -219,7 +219,7 @@ class GameManager:
         ]
 
         self.daily_task_templates = [
-            "Wash your face", "Brush your teeth", "Make your bed", "Tidy room for 5 mins",
+            "Wash your face", "Brush your teeth", "Shower", "Make your bed", "Tidy room for 5 mins",
             "Plan your day", "Workout", "Work on a project"
         ]
 
@@ -518,28 +518,6 @@ class GameManager:
         message = ""
         xp_gain, coin_gain = 0, 0
 
-        if action_type == "Complete a task":
-            xp_gain, coin_gain = random.randint(3, 8), random.randint(1, 4)
-        elif action_type == "Procrastinate":
-            punishment_value = random.randint(3, 8)
-            self.apply_punishment_value(punishment_value) # Use the new method
-            message = f"You procrastinated. Your punishment sum increased by {punishment_value}."
-            self.increment_daily_tasks()
-        elif action_type == "Rest":
-            if self.player.xp_boost_pending == 0:
-                self.player.xp_boost_pending = 5
-                message = "You rested and gained a pending XP boost of 5!"
-            else:
-                message = "You already have an XP boost pending."
-            self.increment_daily_tasks()
-        elif action_type in self.custom_actions:
-            if difficulty is not None:
-                xp_gain, coin_gain = int((difficulty / 10) * 25), int((difficulty / 10) * 15)
-            else:
-                xp_gain, coin_gain = random.randint(1, 3), random.randint(1, 2)
-        else:
-            message = "Unknown action."
-
         if xp_gain > 0 or coin_gain > 0:
             xp_msg = self.add_xp(xp_gain)
             coin_msg = self.add_coins(coin_gain)
@@ -625,7 +603,144 @@ class GameManager:
         self.save_game()
         return message
 
+    def generate_workout_plan(self, details):
+        """Generates a full workout plan with 4-7 exercises as individual quests."""
+        difficulty = details.get('difficulty')
+        training_part = details.get('training_part')
+        sets = details.get('sets', 4)
+        reps = details.get('reps', 12)
+        duration = details.get('duration', 30)
+
+        # --- Parse training_part to get skill and workout_type ---
+        skill_type = None
+        workout_type = None # For Strength/Durability
+
+        if not training_part:
+            return "Invalid training part provided."
+
+        if "Strength" in training_part:
+            skill_type = "Strength"
+            match = re.search(r'\((\w+\s*\w*)\)', training_part)
+            if match: workout_type = match.group(1).replace(" Body", "")
+        elif "Durability" in training_part:
+            skill_type = "Durability"
+            match = re.search(r'\((\w+)\)', training_part)
+            if match: workout_type = match.group(1)
+        elif "Endurance" in training_part:
+            skill_type = "Endurance"
+        
+        if not skill_type:
+            return "Could not determine skill type from training part."
+        # --- End Parsing ---
+
+        possible_exercises = self.all_physical_exercises.get(skill_type, [])
+        filtered_by_difficulty = [e for e in possible_exercises if e['difficulty'] == difficulty]
+        
+        if not filtered_by_difficulty:
+            return f"No '{difficulty}' exercises found for '{skill_type}'."
+
+        # Further filter for Strength/Durability
+        if skill_type in ["Strength", "Durability"]:
+            if not workout_type:
+                return "Workout type (e.g., Upper, Core) is required for Strength/Durability."
+            # Allow 'Full' body workouts to be included in any specific body part plan
+            filtered_by_type = [e for e in filtered_by_difficulty if e.get('workout_type') == workout_type or e.get('workout_type') == 'Full']
+            if not filtered_by_type:
+                return f"No '{workout_type}' exercises found for the selected skill and difficulty."
+            
+            # Avoid exercises that are already active quests
+            active_quest_names = {q['name'] for q in self.player.quests}
+            available_exercises = [
+                e for e in filtered_by_type 
+                if f"Workout: {sets}x{reps} {e['name']}" not in active_quest_names
+            ]
+        else: # Endurance
+            active_quest_names = {q['name'] for q in self.player.quests}
+            available_exercises = [
+                e for e in filtered_by_difficulty
+                if f"Endurance: {e['name']} ({duration} mins)" not in active_quest_names
+            ]
+
+        num_exercises_to_generate = random.randint(4, 7)
+        
+        if len(available_exercises) < num_exercises_to_generate:
+            if len(available_exercises) == 0:
+                return ("There are no more available exercises for the selected options. "
+                        "Please complete existing quests or change the training options.")
+            # If not enough, just take all available ones
+            num_exercises_to_generate = len(available_exercises)
+
+        selected_exercises = random.sample(available_exercises, num_exercises_to_generate)
+        
+        generated_quests_names = []
+        # Set due date to tomorrow at 2 AM to give ample time
+        due_date = (datetime.datetime.now() + datetime.timedelta(days=1)).replace(hour=2, minute=0, second=0).isoformat()
+
+        for exercise in selected_exercises:
+            quest = {}
+            base_quest = {
+                'quest_type': 'main',
+                'due_date': due_date,
+            }
+
+            if skill_type in ["Strength", "Durability"]:
+                total_reps = sets * reps
+                reward_scale_factor = min(1.0, total_reps / 100.0)
+                base_xp = exercise.get('base_xp', 0) * 10
+                base_coin = exercise.get('base_coin', 0) * 5
+                xp_reward = math.ceil(base_xp * reward_scale_factor)
+                coin_reward = math.ceil(base_coin * reward_scale_factor)
+                skill_xp_reward = math.ceil((base_xp * 2) * reward_scale_factor)
+
+                quest_name = f"Workout: {sets}x{reps} {exercise['name']}"
+                quest = {
+                    'name': quest_name,
+                    'description': f"Part of your {difficulty} {training_part} workout plan.",
+                    'xp_reward': xp_reward,
+                    'coin_reward': coin_reward,
+                    'skill_reward': {'skill': skill_type, 'amount': skill_xp_reward},
+                    'workout_type': exercise.get('workout_type')
+                }
+                base_quest['steps'] = f"1. Perform {sets} sets of {reps} reps of {exercise['name']}.\n2. Mark quest as complete."
+
+            elif skill_type == "Endurance":
+                difficulty_multiplier = {'Easy': 1.0, 'Mediocre': 1.2, 'Difficult': 1.5, 'Very Difficult': 2.0}.get(difficulty, 1.0)
+                base_xp_per_min = exercise.get('base_xp', 1) * 0.5 * difficulty_multiplier
+                base_coin_per_min = exercise.get('base_coin', 1) * 0.25 * difficulty_multiplier
+                xp_reward_full = math.ceil(base_xp_per_min * duration * 10)
+                coin_reward_full = math.ceil(base_coin_per_min * duration * 5)
+
+                quest_name = f"Endurance: {exercise['name']} ({duration} mins)"
+                quest = {
+                    'name': quest_name,
+                    'description': f"Part of your {difficulty} Endurance workout plan.",
+                    'xp_reward': xp_reward_full,
+                    'coin_reward': coin_reward_full,
+                    'skill_reward': {'skill': skill_type, 'amount': math.ceil(xp_reward_full * 0.5)},
+                    'duration_target': duration,
+                }
+                base_quest['steps'] = f"1. Perform {exercise['name']} for {duration} minutes.\n2. Mark quest as complete and enter duration completed."
+            
+            if quest:
+                quest.update(base_quest)
+                self.player.quests.append(quest)
+                self.add_new_skill(skill_type)
+                generated_quests_names.append(quest['name'])
+
+        if generated_quests_names:
+            self.player.last_workout_type = workout_type if skill_type in ["Strength", "Durability"] else "Endurance"
+            self.save_game()
+            plan_summary = "\n- ".join(generated_quests_names)
+            return (f"Generated a new {difficulty} {training_part} workout plan with {len(generated_quests_names)} exercises:\n\n"
+                    f"- {plan_summary}")
+        
+        return "Failed to generate a workout plan. Not enough available exercises."
+
     def generate_quest(self, category, sub_category=None, details=None):
+        if category == "Training" and details:
+            return self.generate_workout_plan(details)
+
+        # --- Existing logic for other quest types ---
         quest = {}
         due_date_str = details.get('due_date')
 
@@ -634,115 +749,19 @@ class GameManager:
             'due_date': due_date_str,
             'steps': details.get('steps', '')
         }
-
-        if category == "Training" and details:
-            skill_type = details.get('skill')
-            difficulty = details.get('difficulty')
-
-            # Filter exercises by skill and difficulty
-            possible_exercises = self.all_physical_exercises.get(skill_type, [])
-            filtered_by_difficulty = [e for e in possible_exercises if e['difficulty'] == difficulty]
-
-            if skill_type in ["Strength", "Durability"]:
-                workout_type = details.get('workout_type')
-                sets = details.get('sets', 1)
-                reps = details.get('reps', 10)
-
-                # Then filter by workout type, avoiding last workout type if possible
-                filtered_by_type = [e for e in filtered_by_difficulty if e['workout_type'] == workout_type or e['workout_type'] == 'Full']
-
-                if self.player.last_workout_type:
-                    balanced_exercises = [e for e in filtered_by_type if e['workout_type'] != self.player.last_workout_type]
-                    if balanced_exercises:
-                        filtered_by_type = balanced_exercises
-
-                # Check for existing quests with the same workout name, sets, and reps
-                active_quest_names = {q['name'] for q in self.player.quests}
-                truly_available_exercises = [
-                    e for e in filtered_by_type
-                    if f"Workout: {sets}x{reps} {e['name']}" not in active_quest_names
-                ]
-
-                if not truly_available_exercises:
-                    return ("There are no more variations of workouts with those options that are not already active quests. "
-                            "Please complete an existing workout quest or change the training options.")
-
-                selected_exercise = random.choice(truly_available_exercises)
-
-                # --- REWARD SCALING LOGIC ---
-                total_reps = sets * reps
-                # Baseline is 100 reps for 100% reward. Capped at 100%.
-                reward_scale_factor = min(1.0, total_reps / 100.0)
-
-                # Base rewards from the exercise are multiplied by the scaling factor
-                base_xp = selected_exercise.get('base_xp', 0) * 10 # Increase base reward for more meaningful outcome
-                base_coin = selected_exercise.get('base_coin', 0) * 5 # Increase base reward
-
-                xp_reward = math.ceil(base_xp * reward_scale_factor)
-                coin_reward = math.ceil(base_coin * reward_scale_factor)
-                skill_xp_reward = math.ceil((base_xp * 2) * reward_scale_factor)
-
-
-                quest_name = f"Workout: {sets}x{reps} {selected_exercise['name']}"
-                quest = {
-                    'name': quest_name,
-                    'description': f"Complete your custom {skill_type} workout. Difficulty: {difficulty}.",
-                    'xp_reward': xp_reward,
-                    'coin_reward': coin_reward,
-                    'skill_reward': {'skill': skill_type, 'amount': skill_xp_reward},
-                    'workout_type': selected_exercise['workout_type']
-                }
-                base_quest['steps'] = f"1. Perform {sets} sets of {reps} reps of {selected_exercise['name']}.\n2. Mark quest as complete."
-
-            elif skill_type == "Endurance":
-                duration_target = details.get('duration', 30) # in minutes
-                
-                # Endurance quests don't filter by body part, but by duration target
-                # We need to find an exercise that is suitable for the selected difficulty AND has a duration.
-                # Assuming base_xp and base_coin are already defined in endurance_exercises
-                suitable_exercises = [e for e in filtered_by_difficulty if 'duration_target' in e]
-                if not suitable_exercises:
-                    return "No endurance exercises found for the selected difficulty and duration."
-
-                selected_exercise = random.choice(suitable_exercises)
-
-                # Rewards for endurance are based on target duration, adjusted by difficulty
-                # Higher difficulty means higher base rewards for the same duration
-                difficulty_multiplier = {
-                    'Easy': 1.0, 'Mediocre': 1.2, 'Difficult': 1.5, 'Very Difficult': 2.0
-                }.get(difficulty, 1.0)
-
-                base_xp_per_min = selected_exercise.get('base_xp', 1) * 0.5 * difficulty_multiplier # Small base, scales with duration
-                base_coin_per_min = selected_exercise.get('base_coin', 1) * 0.25 * difficulty_multiplier
-
-                # Total potential rewards if 100% completed
-                xp_reward_full = math.ceil(base_xp_per_min * duration_target * 10) # Multiply by 10 for more impact
-                coin_reward_full = math.ceil(base_coin_per_min * duration_target * 5) # Multiply by 5 for more impact
-
-                quest_name = f"Endurance: {selected_exercise['name']} ({duration_target} mins)"
-                quest = {
-                    'name': quest_name,
-                    'description': f"Complete {duration_target} minutes of {selected_exercise['name']}. Difficulty: {difficulty}.",
-                    'xp_reward': xp_reward_full, # This is the full reward, will be scaled on completion
-                    'coin_reward': coin_reward_full, # This is the full reward, will be scaled on completion
-                    'skill_reward': {'skill': skill_type, 'amount': math.ceil(xp_reward_full * 0.5)},
-                    'duration_target': duration_target, # Store target for completion calculation
-                }
-                base_quest['steps'] = f"1. Perform {selected_exercise['name']} for {duration_target} minutes.\n2. Mark quest as complete and enter duration completed."
-
-
-        elif category == "Intellect Conditioning" and details:
+        
+        if category == "Intellect Conditioning" and details:
             quest = {'name': f"Intellect: {details.get('activity', 'Unknown')}",
-                     'description': f"Complete the intellect activity: {details.get('activity', 'Unknown')}.",
-                     'xp_reward': 15, 'coin_reward': 5, 'skill_reward': {'skill': 'Intellect', 'amount': 2}}
+                    'description': f"Complete the intellect activity: {details.get('activity', 'Unknown')}.",
+                    'xp_reward': 15, 'coin_reward': 5, 'skill_reward': {'skill': 'Intellect', 'amount': 2}}
         elif category == "Faith Goal":
             quest = {'name': "Spiritual Duty",
-                     'description': "Engage in a spiritual or mindful activity for the day.",
-                     'xp_reward': 10, 'coin_reward': 10, 'skill_reward': {'skill': 'Faith', 'amount': 2}}
+                    'description': "Engage in a spiritual or mindful activity for the day.",
+                    'xp_reward': 10, 'coin_reward': 10, 'skill_reward': {'skill': 'Faith', 'amount': 2}}
         elif category == "Long-Term Project" and details:
-             quest = {'name': details.get('project_name', 'Unnamed Project'),
-                      'description': f"Work on your long-term project: {details.get('project_name', 'Unnamed Project')}.",
-                      'xp_reward': 75, 'coin_reward': 40}
+            quest = {'name': details.get('project_name', 'Unnamed Project'),
+                    'description': f"Work on your long-term project: {details.get('project_name', 'Unnamed Project')}.",
+                    'xp_reward': 75, 'coin_reward': 40}
 
         if quest:
             quest.update(base_quest)
@@ -751,7 +770,8 @@ class GameManager:
                 self.add_new_skill(quest['skill_reward']['skill'])
             self.save_game()
             return f"New main quest generated: {quest['name']}"
-        return "Failed to generate quest."
+        
+        return "Failed to generate quest. Check your selections."
 
     def generate_side_quest(self):
         active_side_quest_names = [q['name'] for q in self.player.quests if q.get('quest_type') == 'side']
@@ -882,7 +902,7 @@ class GameManager:
     def _penalize_lose_coins(self, amount):
         lost_amount = min(self.player.coins, amount)
         self.player.coins -= lost_amount
-        return f"Your purse feels lighter... You lost {lost_amount} coins."
+        return f"Your wallet feels lighter... You lost {lost_amount} coins."
 
     def _penalize_lose_xp(self, amount):
         lost_amount = min(self.player.xp, amount)
@@ -1618,4 +1638,3 @@ class GameManager:
 
         self.save_game()
         return f"Successfully sold {item_name} for {sell_price} coins!"
-

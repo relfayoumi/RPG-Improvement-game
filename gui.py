@@ -66,15 +66,6 @@ class GameGUI(QMainWindow):
         self._block_daily_task_signal = False
         self.shopping_cart = {} # For the shop cart
 
-        # Attributes to manage sequential quest generation state
-        self.current_training_skill = None
-        self.current_training_body_part = None
-        self.current_training_difficulty = None
-        self.current_training_sets = None
-        self.current_training_reps = None
-        self.current_training_duration = None
-
-
         self.setWindowTitle("Self-Improvement RPG")
         self.setGeometry(100, 100, 1400, 900) # Increased size for new layouts
 
@@ -535,26 +526,25 @@ class GameGUI(QMainWindow):
         self.splitter = QSplitter(Qt.Horizontal)
 
         # Left side: Quest Generation and Lists
-        # Create a scroll area for the entire left_widget
         left_scroll_area = QScrollArea()
         left_scroll_area.setWidgetResizable(True)
-        left_widget_content = QWidget() # This will be the content of the scroll area
-        left_layout = QVBoxLayout(left_widget_content) # Apply layout to this content widget
-        left_layout.setAlignment(Qt.AlignTop) # Align content to the top
-        left_scroll_area.setWidget(left_widget_content) # Set the content widget to the scroll area
+        left_widget_content = QWidget()
+        left_layout = QVBoxLayout(left_widget_content)
+        left_layout.setAlignment(Qt.AlignTop)
+        left_scroll_area.setWidget(left_widget_content)
 
         # --- Daily Tasks Box ---
         daily_tasks_box = QFrame(); daily_tasks_box.setFrameShape(QFrame.StyledPanel)
         daily_tasks_layout = QVBoxLayout(daily_tasks_box)
         daily_tasks_layout.addWidget(QLabel("<b>✔️ Daily Tasks:</b>"))
-        self.daily_tasks_list_layout = QVBoxLayout() # Use a vertical layout for checkboxes
+        self.daily_tasks_list_layout = QVBoxLayout()
         daily_tasks_layout.addLayout(self.daily_tasks_list_layout)
         left_layout.addWidget(daily_tasks_box)
 
 
         # --- Generation Box ---
         generation_box = QFrame(); generation_box.setFrameShape(QFrame.StyledPanel)
-        generation_layout = QVBoxLayout(generation_box) # Changed to QVBoxLayout
+        generation_layout = QVBoxLayout(generation_box)
         generation_layout.addWidget(QLabel("<b>Generate a New Main Quest:</b>"))
 
         self.quest_category_combo = QComboBox()
@@ -562,16 +552,54 @@ class GameGUI(QMainWindow):
         self.quest_category_combo.currentTextChanged.connect(self._on_quest_category_change)
         generation_layout.addWidget(self.quest_category_combo)
 
-        # Container for training specific inputs
+        # REVAMPED: Container for training specific inputs
         self.training_inputs_container = QWidget()
-        self.training_inputs_layout = QVBoxLayout(self.training_inputs_container)
-        self.training_inputs_layout.setContentsMargins(0, 0, 0, 0)
+        training_inputs_layout = QFormLayout(self.training_inputs_container) # Use QFormLayout for label-widget pairs
+        training_inputs_layout.setContentsMargins(0, 0, 0, 0)
+        
+        # Difficulty selection
+        self.quest_difficulty_combo = QComboBox()
+        self.quest_difficulty_combo.addItems(["", "Easy", "Mediocre", "Difficult", "Very Difficult"])
+        training_inputs_layout.addRow("Difficulty:", self.quest_difficulty_combo)
+
+        # Training Part selection
+        self.quest_training_part_combo = QComboBox()
+        self.quest_training_part_combo.addItems([
+            "", 
+            "Strength (Upper Body)", "Strength (Lower Body)", "Strength (Core)", "Strength (Full Body)",
+            "Endurance", 
+            "Durability (Core)", "Durability (Lower)", "Durability (Upper)"
+        ])
+        training_inputs_layout.addRow("Training Part:", self.quest_training_part_combo)
+
+        # Sets and Reps for Strength/Durability
+        self.sets_reps_widget = QWidget()
+        sets_reps_layout = QHBoxLayout(self.sets_reps_widget)
+        sets_reps_layout.setContentsMargins(0, 0, 0, 0)
+        self.quest_sets_input = QSpinBox(); self.quest_sets_input.setRange(1, 100); self.quest_sets_input.setValue(4)
+        self.quest_reps_input = QSpinBox(); self.quest_reps_input.setRange(1, 100); self.quest_reps_input.setValue(12)
+        sets_reps_layout.addWidget(QLabel("Sets:"))
+        sets_reps_layout.addWidget(self.quest_sets_input)
+        sets_reps_layout.addWidget(QLabel("Reps:"))
+        sets_reps_layout.addWidget(self.quest_reps_input)
+        training_inputs_layout.addRow(self.sets_reps_widget)
+
+        # Duration for Endurance
+        self.duration_widget = QWidget()
+        duration_layout = QHBoxLayout(self.duration_widget)
+        duration_layout.setContentsMargins(0, 0, 0, 0)
+        self.quest_duration_input = QSpinBox(); self.quest_duration_input.setRange(5, 240); self.quest_duration_input.setValue(30)
+        duration_layout.addWidget(QLabel("Duration (minutes):"))
+        duration_layout.addWidget(self.quest_duration_input)
+        training_inputs_layout.addRow(self.duration_widget)
+        
+        # Connect signals to the new update function
+        self.quest_difficulty_combo.currentTextChanged.connect(self._update_training_quest_ui)
+        self.quest_training_part_combo.currentTextChanged.connect(self._update_training_quest_ui)
+
         generation_layout.addWidget(self.training_inputs_container)
-        self.training_inputs_container.setVisible(False) # Initially hidden
-
-        self._create_quest_detail_widgets(self.training_inputs_layout) # Pass the training container layout
-
-        # Other quest widgets directly added to generation_layout, not training_inputs_layout
+        
+        # Other quest widgets
         self.long_term_quest_widget = QWidget()
         long_term_layout = QGridLayout(self.long_term_quest_widget)
         long_term_layout.setContentsMargins(0,0,0,0)
@@ -583,7 +611,6 @@ class GameGUI(QMainWindow):
         self.quest_due_date_input.setDate(QDate.currentDate().addDays(30))
         long_term_layout.addWidget(self.quest_due_date_input, 1, 1)
         generation_layout.addWidget(self.long_term_quest_widget)
-        self.long_term_quest_widget.setVisible(False)
 
         self.intellect_goal_widgets = QWidget()
         intellect_layout = QGridLayout(self.intellect_goal_widgets)
@@ -597,10 +624,9 @@ class GameGUI(QMainWindow):
         intellect_layout.addWidget(QLabel("Activity:"), 1, 0)
         intellect_layout.addWidget(self.quest_activity_combo, 1, 1)
         generation_layout.addWidget(self.intellect_goal_widgets)
-        self.intellect_goal_widgets.setVisible(False)
 
         button_layout = QHBoxLayout()
-        self.generate_quest_button = QPushButton("Generate Main")
+        self.generate_quest_button = QPushButton("Generate Main Quest")
         self.generate_quest_button.clicked.connect(self._generate_new_main_quest)
         button_layout.addWidget(self.generate_quest_button)
         self.generate_side_quest_button = QPushButton("Generate Side")
@@ -609,7 +635,7 @@ class GameGUI(QMainWindow):
         generation_layout.addLayout(button_layout)
 
         left_layout.addWidget(generation_box)
-
+        
         # --- Quest Lists ---
         self.main_quests_list = QListWidget()
         self.side_quests_list = QListWidget()
@@ -624,7 +650,7 @@ class GameGUI(QMainWindow):
         self.complete_quest_button = QPushButton("Complete Selected Quest")
         self.complete_quest_button.clicked.connect(self._complete_selected_quest)
         left_layout.addWidget(self.complete_quest_button)
-        left_layout.addStretch(1) # Add stretch to push content to top within the scroll area
+        left_layout.addStretch(1)
 
         # Right side: Quest Details
         self.quest_details_panel = QFrame(); self.quest_details_panel.setFrameShape(QFrame.StyledPanel)
@@ -632,7 +658,7 @@ class GameGUI(QMainWindow):
         self.details_title = QLabel(); self.details_title.setWordWrap(True)
         self.details_rewards_label = QLabel(); self.details_rewards_label.setWordWrap(True)
         self.details_steps_label = QLabel(); self.details_steps_label.setWordWrap(True)
-        self.details_duration_input_label = QLabel("Enter duration completed (minutes):") # For endurance quests
+        self.details_duration_input_label = QLabel("Enter duration completed (minutes):")
         self.details_duration_input = QSpinBox(); self.details_duration_input.setRange(0, 999)
         self.details_confirm_duration_button = QPushButton("Confirm Completion")
         self.details_confirm_duration_button.clicked.connect(self._confirm_endurance_quest_completion)
@@ -646,159 +672,59 @@ class GameGUI(QMainWindow):
         details_layout.addStretch(1)
         self.quest_details_panel.setVisible(False)
 
-        self.splitter.addWidget(left_scroll_area) # Add the scroll area to the splitter
+        self.splitter.addWidget(left_scroll_area)
         self.splitter.addWidget(self.quest_details_panel)
         self.splitter.setSizes([700, 300])
         main_layout.addWidget(self.splitter)
-
-    def _create_quest_detail_widgets(self, parent_layout):
-        # Skill Type selection (Strength, Endurance, Durability)
-        self.quest_skill_type_label = QLabel("Skill Type:")
-        self.quest_skill_type_combo = QComboBox()
-        self.quest_skill_type_combo.addItems(["", "Strength", "Endurance", "Durability"])
-        self.quest_skill_type_combo.currentTextChanged.connect(self._on_training_skill_selected)
-        parent_layout.addWidget(self.quest_skill_type_label)
-        parent_layout.addWidget(self.quest_skill_type_combo)
-
-        # Body Part selection (Upper, Lower, Core, Full) - only for Strength/Durability
-        self.quest_workout_type_label = QLabel("Body Part:")
-        self.quest_workout_type_combo = QComboBox()
-        self.quest_workout_type_combo.addItems(["", "Upper", "Lower", "Core", "Full"])
-        self.quest_workout_type_combo.currentTextChanged.connect(self._on_training_body_part_selected)
-        parent_layout.addWidget(self.quest_workout_type_label)
-        parent_layout.addWidget(self.quest_workout_type_combo)
-        self.quest_workout_type_label.setVisible(False)
-        self.quest_workout_type_combo.setVisible(False)
-
-        # Difficulty selection
-        self.quest_difficulty_label = QLabel("Difficulty:")
-        self.quest_difficulty_combo = QComboBox()
-        self.quest_difficulty_combo.addItems(["", "Easy", "Mediocre", "Difficult", "Very Difficult"])
-        self.quest_difficulty_combo.currentTextChanged.connect(self._on_training_difficulty_selected)
-        parent_layout.addWidget(self.quest_difficulty_label)
-        parent_layout.addWidget(self.quest_difficulty_combo)
-        self.quest_difficulty_label.setVisible(False)
-        self.quest_difficulty_combo.setVisible(False)
-
-        # Sets and Reps for Strength/Durability
-        self.sets_reps_widget = QWidget()
-        sets_reps_layout = QGridLayout(self.sets_reps_widget)
-        sets_reps_layout.setContentsMargins(0, 0, 0, 0)
-        self.quest_sets_label = QLabel("Sets:")
-        self.quest_sets_input = QSpinBox(); self.quest_sets_input.setRange(1, 100); self.quest_sets_input.setValue(4)
-        self.quest_reps_label = QLabel("Reps:")
-        self.quest_reps_input = QSpinBox(); self.quest_reps_input.setRange(1, 100); self.quest_reps_input.setValue(12)
-        sets_reps_layout.addWidget(self.quest_sets_label, 0, 0)
-        sets_reps_layout.addWidget(self.quest_sets_input, 0, 1)
-        sets_reps_layout.addWidget(self.quest_reps_label, 1, 0)
-        sets_reps_layout.addWidget(self.quest_reps_input, 1, 1)
-        parent_layout.addWidget(self.sets_reps_widget)
-        self.sets_reps_widget.setVisible(False)
-
-        # Duration for Endurance
-        self.duration_widget = QWidget()
-        duration_layout = QGridLayout(self.duration_widget)
-        duration_layout.setContentsMargins(0, 0, 0, 0)
-        self.quest_duration_label = QLabel("Duration (minutes):")
-        self.quest_duration_input = QSpinBox(); self.quest_duration_input.setRange(5, 240); self.quest_duration_input.setValue(30)
-        duration_layout.addWidget(self.quest_duration_label, 0, 0)
-        duration_layout.addWidget(self.quest_duration_input, 0, 1)
-        parent_layout.addWidget(self.duration_widget)
-        self.duration_widget.setVisible(False)
-
+        
+        # Initial state setup
+        self._on_quest_category_change("")
 
     def _on_quest_category_change(self, text):
-        # Reset training selections
-        self.current_training_skill = None
-        self.current_training_body_part = None
-        self.current_training_difficulty = None
-        self.current_training_sets = None
-        self.current_training_reps = None
-        self.current_training_duration = None
-
         # Hide all specific input widgets first
         self.training_inputs_container.setVisible(False)
         self.intellect_goal_widgets.setVisible(False)
         self.long_term_quest_widget.setVisible(False)
-
-        # Reset combos to default
-        self.quest_skill_type_combo.setCurrentIndex(0)
-        self.quest_workout_type_combo.setCurrentIndex(0)
-        self.quest_difficulty_combo.setCurrentIndex(0)
-
-        # Show only skill type combo for training
-        self.quest_skill_type_label.setVisible(False)
-        self.quest_skill_type_combo.setVisible(False)
-        self.quest_workout_type_label.setVisible(False)
-        self.quest_workout_type_combo.setVisible(False)
-        self.quest_difficulty_label.setVisible(False)
-        self.quest_difficulty_combo.setVisible(False)
-        self.sets_reps_widget.setVisible(False)
-        self.duration_widget.setVisible(False)
-
-        self.generate_quest_button.setEnabled(False) # Disable until all selections are made
+        self.generate_quest_button.setText("Generate Main Quest") # Default text
+        self.generate_quest_button.setEnabled(False)
 
         if text == "Training":
             self.training_inputs_container.setVisible(True)
-            self.quest_skill_type_label.setVisible(True)
-            self.quest_skill_type_combo.setVisible(True)
+            self.generate_quest_button.setText("Generate Workout Plan")
+            # Reset training fields
+            self.quest_difficulty_combo.setCurrentIndex(0)
+            self.quest_training_part_combo.setCurrentIndex(0)
+            self._update_training_quest_ui() # Update UI based on reset fields
         elif text == "Intellect Conditioning":
             self.intellect_goal_widgets.setVisible(True)
-            self._on_intellect_sub_category_change(self.quest_int_sub_cat_combo.currentText()) # Initialize activities
+            self._on_intellect_sub_category_change(self.quest_int_sub_cat_combo.currentText())
+            self.generate_quest_button.setEnabled(True)
         elif text == "Faith Goal":
-            self.generate_quest_button.setEnabled(True) # No extra details needed, enable button
+            self.generate_quest_button.setEnabled(True)
         elif text == "Long-Term Project":
             self.long_term_quest_widget.setVisible(True)
+            # Could add a check for project name to enable button
+            self.generate_quest_button.setEnabled(True) # For now, enable it
 
+    def _update_training_quest_ui(self):
+        """Shows/hides training-specific widgets and enables/disables the generate button."""
+        training_part = self.quest_training_part_combo.currentText()
+        difficulty = self.quest_difficulty_combo.currentText()
 
-    def _on_training_skill_selected(self, text):
-        self.current_training_skill = text if text else None
-        self.quest_workout_type_label.setVisible(False)
-        self.quest_workout_type_combo.setVisible(False)
-        self.quest_difficulty_label.setVisible(False)
-        self.quest_difficulty_combo.setVisible(False)
+        # Default state
         self.sets_reps_widget.setVisible(False)
         self.duration_widget.setVisible(False)
         self.generate_quest_button.setEnabled(False)
 
-        if self.current_training_skill:
-            if self.current_training_skill in ["Strength", "Durability"]:
-                self.quest_workout_type_label.setVisible(True)
-                self.quest_workout_type_combo.setVisible(True)
-                # Reset next steps
-                self.quest_workout_type_combo.setCurrentIndex(0)
-            elif self.current_training_skill == "Endurance":
-                self.quest_difficulty_label.setVisible(True)
-                self.quest_difficulty_combo.setVisible(True)
-                # Reset next steps
-                self.quest_difficulty_combo.setCurrentIndex(0)
+        if not training_part or not difficulty:
+            return # Not enough info to proceed
 
-    def _on_training_body_part_selected(self, text):
-        self.current_training_body_part = text if text else None
-        self.quest_difficulty_label.setVisible(False)
-        self.quest_difficulty_combo.setVisible(False)
-        self.sets_reps_widget.setVisible(False)
-        self.generate_quest_button.setEnabled(False)
-
-        if self.current_training_body_part:
-            self.quest_difficulty_label.setVisible(True)
-            self.quest_difficulty_combo.setVisible(True)
-            self.quest_difficulty_combo.setCurrentIndex(0)
-
-    def _on_training_difficulty_selected(self, text):
-        self.current_training_difficulty = text if text else None
-        self.sets_reps_widget.setVisible(False)
-        self.duration_widget.setVisible(False)
-        self.generate_quest_button.setEnabled(False)
-
-        if self.current_training_difficulty:
-            if self.current_training_skill in ["Strength", "Durability"]:
-                self.sets_reps_widget.setVisible(True)
-                self.generate_quest_button.setEnabled(True)
-            elif self.current_training_skill == "Endurance":
-                self.duration_widget.setVisible(True)
-                self.generate_quest_button.setEnabled(True)
-
+        if "Strength" in training_part or "Durability" in training_part:
+            self.sets_reps_widget.setVisible(True)
+            self.generate_quest_button.setEnabled(True)
+        elif "Endurance" in training_part:
+            self.duration_widget.setVisible(True)
+            self.generate_quest_button.setEnabled(True)
 
     def _on_intellect_sub_category_change(self, text):
         self.quest_activity_combo.clear()
@@ -818,21 +744,18 @@ class GameGUI(QMainWindow):
         details['steps'] = "Complete the generated objective."
 
         if category == "Training":
-            details['skill'] = self.quest_skill_type_combo.currentText()
             details['difficulty'] = self.quest_difficulty_combo.currentText()
+            details['training_part'] = self.quest_training_part_combo.currentText()
 
-            if details['skill'] in ["Strength", "Durability"]:
-                details['workout_type'] = self.quest_workout_type_combo.currentText()
+            if not details['difficulty'] or not details['training_part']:
+                QMessageBox.warning(self, "Input Needed", "Please select a difficulty and training part.")
+                return
+
+            if "Strength" in details['training_part'] or "Durability" in details['training_part']:
                 details['sets'] = self.quest_sets_input.value()
                 details['reps'] = self.quest_reps_input.value()
-                if not all([details['skill'], details['workout_type'], details['difficulty']]):
-                    QMessageBox.warning(self, "Input Needed", "Please select all training options.")
-                    return
-            elif details['skill'] == "Endurance":
+            elif "Endurance" in details['training_part']:
                 details['duration'] = self.quest_duration_input.value()
-                if not all([details['skill'], details['difficulty'], details['duration']]):
-                    QMessageBox.warning(self, "Input Needed", "Please select all training options.")
-                    return
 
         elif category == "Intellect Conditioning":
             details['activity'] = self.quest_activity_combo.currentText()
@@ -848,7 +771,10 @@ class GameGUI(QMainWindow):
                  QMessageBox.warning(self, "Input Needed", "Please provide a project name."); return
 
         message = self.game_manager.generate_quest(category, details=details)
-        QMessageBox.information(self, "Quest Generation", message)
+        if "Failed" in message or "There are no more variations" in message:
+            QMessageBox.warning(self, "Quest Generation Failed", message)
+        else:
+            QMessageBox.information(self, "Quest Generation", message)
         self._update_quests_display()
 
     def _generate_new_side_quest(self):
@@ -1668,4 +1594,3 @@ class GameGUI(QMainWindow):
     def closeEvent(self, event):
         self.game_manager.save_game()
         super().closeEvent(event)
-

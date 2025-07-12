@@ -1,143 +1,52 @@
 {
-    "xp": 856,
-    "coins": 132,
-    "title": "750 XP - Legend",
-    "current_level": 750,
+    "xp": 299,
+    "coins": 145,
+    "title": "250 XP - Accomplished Expert",
+    "current_level": 250,
     "punishment_sum": 0,
     "xp_boost_pending": 0,
     "coin_gain_multiplier": 1.0,
     "punishment_mitigation_pending": false,
     "pets": [],
     "quests": [],
-    "daily_tasks_completed": 37,
-    "last_daily_reset_date": "2025-07-01",
+    "daily_tasks_completed": 1,
+    "last_daily_reset_date": "2025-07-10",
     "skills": {
-        "Strength": {
-            "xp": 140,
-            "last_updated": "2025-07-01"
-        },
-        "Endurance": {
-            "xp": 225,
-            "last_updated": "2025-07-01"
-        },
-        "Charisma": {
-            "xp": 0,
-            "last_updated": "2025-07-01"
-        },
         "Intellect": {
-            "xp": 10,
-            "last_updated": "2025-07-01"
+            "xp": 7,
+            "last_updated": "2025-07-07"
         }
     },
     "pet_cooldowns": {},
     "play_cooldowns": {},
     "transcendence_buff_end_time": null,
     "daily_tasks": {
-        "Wash your face": true,
-        "Brush your teeth": false,
-        "Make your bed": false,
-        "Shower": true,
-        "Work on a project": true,
-        "Plan your day": true,
-        "Tidy room for 5 mins": true
+        "Wash your face": true
     },
     "pet_food": 0,
-    "corruption": 0,
+    "corruption": 15,
     "daily_streak": 0,
     "unlocked_titles": [
         "Novice",
-        "Indomitable",
-        "Diligent",
-        "Zealot",
-        "Workhorse",
-        "Sage",
-        "Ascended",
         "Legendary Quester",
-        "Prodigy"
+        "Workhorse",
+        "Diligent"
     ],
-    "active_title": "Diligent",
+    "active_title": "Legendary Quester",
     "gear": {
         "Helmet": null,
         "Chest": null,
         "Weapon": null,
         "Boots": null
     },
-    "inventory": [
-        {
-            "name": "Blade of Prosperity",
-            "buff": {
-                "type": "coin_gain",
-                "value": 0.1
-            },
-            "requirements": {
-                "Strength": 250
-            },
-            "type": "Weapon"
-        },
-        {
-            "name": "Aegis of Resilience",
-            "buff": {
-                "type": "punishment_reduction",
-                "value": 0.05
-            },
-            "requirements": {
-                "Durability": 300
-            },
-            "type": "Chest"
-        },
-        {
-            "name": "Blade of Prosperity",
-            "buff": {
-                "type": "coin_gain",
-                "value": 0.1
-            },
-            "requirements": {
-                "Strength": 250
-            },
-            "type": "Weapon"
-        },
-        {
-            "name": "Dragonhide Armor",
-            "buff": {
-                "type": "durability_xp_gain",
-                "value": 0.12
-            },
-            "requirements": {
-                "Durability": 500
-            },
-            "type": "Chest"
-        },
-        {
-            "name": "Blade of Prosperity",
-            "buff": {
-                "type": "coin_gain",
-                "value": 0.1
-            },
-            "requirements": {
-                "Strength": 250
-            },
-            "type": "Weapon"
-        },
-        {
-            "name": "Sacred Relic",
-            "buff": {
-                "type": "faith_xp_gain",
-                "value": 0.12
-            },
-            "requirements": {
-                "Faith": 450
-            },
-            "type": "Weapon"
-        }
-    ],
+    "inventory": [],
     "achievements": [
-        "first_steps",
-        "daily_master",
         "corruption_cleanse",
-        "skill_master"
+        "first_steps",
+        "daily_master"
     ],
     "transcendence_count": 0,
-    "main_quests_completed": 19,
+    "main_quests_completed": 8,
     "custom_punishments": [],
-    "last_workout_type": "Upper"
+    "last_workout_type": null
 }

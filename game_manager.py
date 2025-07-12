@@ -116,7 +116,7 @@ class GameManager:
             {'Name': 'Book Wyrm', 'Type': 'Magical', 'BenefitDesc': '+{value} Coin per task', 'Benefit': {'type': 'coin', 'base_value': 2}, 'Price': 120, 'Level': 1, 'XP': 0, 'XP_to_Evolve': 100},
             {'Name': 'Guardian Spirit', 'Type': 'Ethereal', 'BenefitDesc': 'Punishment -{value}', 'Benefit': {'type': 'punishment', 'base_value': 2}, 'Price': 180, 'Level': 1, 'XP': 0, 'XP_to_Evolve': 200},
             {'Name': 'Shadow Panther', 'Type': 'Beast', 'BenefitDesc': 'Corruption -{value}', 'Benefit': {'type': 'corruption', 'base_value': 1}, 'Price': 200, 'Level': 1, 'XP': 0, 'XP_to_Evolve': 180},
-            {'Name': 'Ironclad Beetle', 'Type': 'Insect', 'BenefitDesc': 'Durability Skill +{value} XP', 'Benefit': {'type': 'skill_durability', 'base_value': 3}, 'Price': 160, 'Level': 1, 'XP': 0, 'XP_to_Evolve': 140}
+            {'name': 'Ironclad Beetle', 'Type': 'Insect', 'BenefitDesc': 'Durability Skill +{value} XP', 'Benefit': {'type': 'skill_durability', 'base_value': 3}, 'Price': 160, 'Level': 1, 'XP': 0, 'XP_to_Evolve': 140}
         ]
 
         # Arc data (can be expanded)
@@ -145,9 +145,24 @@ class GameManager:
             {'name': 'Pike Shrugs', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Upper'},
             {'name': 'Sit-ups', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
             {'name': 'Jumps', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Crunches', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Calf Raises', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Plank', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Good Mornings (Bodyweight)', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Full'},
+            {'name': 'Bird Dog', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Glute Bridge', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
             {'name': 'Squats', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
             {'name': 'Wall Curls', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
             {'name': 'Forward/Backward Arm Circles', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Marching in Place', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Wall Sits', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Desk Pushups', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Shoulder Taps', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Arm Raises (Front/Side)', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Neck Rotations', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Wrist Circles', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Ankle Circles', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Cat-Cow Stretch', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Full'},
             # Weight Training
             {'name': 'Dragon Fly\'s', 'difficulty': 'Very Difficult', 'base_xp': 3, 'base_coin': 0, 'workout_type': 'Upper'},
             {'name': 'Skull Crushers', 'difficulty': 'Very Difficult', 'base_xp': 3, 'base_coin': 0, 'workout_type': 'Upper'},
@@ -160,22 +175,40 @@ class GameManager:
             {'name': 'Weighted Lunges', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Lower'},
             {'name': 'Weighted Russian Twists', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Core'},
             {'name': 'Lateral Raises', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Upper'},
-            {'name': 'Bicep Curls', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
-            {'name': 'Hammer Curls', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
-            {'name': 'Trapezius', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
-            {'name': 'Forearm curls (any)', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'}
+            {'name': 'Bicep Curls', 'difficulty': 'Difficult', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Hammer Curls', 'difficulty': 'Difficult', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Trapezius', 'difficulty': 'Difficult', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Forearm curls (any)', 'difficulty': 'Difficult', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Weighted Squats', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Lower'},
+            {'name': 'Light Dumbbell Rows', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Light Dumbbell Shoulder Press', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Goblet Squats (Light Weight)', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Weighted Calf Raises (Light Weight)', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Resistance Band Pull-Aparts', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Resistance Band Bicep Curls', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Light Kettlebell Swings (focus on form)', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Full'},
+            {'name': 'Medicine Ball Rotations (Light)', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'}
         ]
 
         self.endurance_exercises = [
             {'name': 'Final Gear Cycling', 'difficulty': 'Very Difficult', 'base_xp': 3, 'base_coin': 0, 'duration_target': 120}, # in minutes
             {'name': '10 km Run', 'difficulty': 'Very Difficult', 'base_xp': 3, 'base_coin': 0, 'duration_target': 60},
             {'name': 'Cycling', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'duration_target': 45},
-            {'name': 'Shadow Boxing', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'duration_target': 30},
-            {'name': 'Swim', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'duration_target': 40},
-            {'name': 'Knee Raises', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'duration_target': 20},
-            {'name': 'Jumping Squats', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'duration_target': 25},
+            {'name': 'Moderate Jog', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'duration_target': 30},
+            {'name': 'Jump Rope', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'duration_target': 20},
+            {'name': 'Elliptical', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'duration_target': 35},
+            {'name': 'Stair Climber', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'duration_target': 25},
+            {'name': 'Knee Raises', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 2, 'duration_target': 20},
+            {'name': 'Jumping Squats', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 2, 'duration_target': 25},
+            {'name': 'High Knees', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 2, 'duration_target': 15},
+            {'name': 'Jumping Jacks', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 2, 'duration_target': 15},
+            {'name': 'Power Walk', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 2, 'duration_target': 45},
+            {'name': 'Dancing (moderate intensity)', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'duration_target': 30},
             {'name': 'Butt Kicks', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'duration_target': 15},
-            {'name': 'Walk', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'duration_target': 60}
+            {'name': 'Walk', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'duration_target': 60},
+            {'name': 'Strolling', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'duration_target': 90},
+            {'name': 'Leisurely Bike Ride', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'duration_target': 40},
+            {'name': 'Light Stretching/Mobility Routine', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'duration_target': 20}
         ]
 
         self.durability_exercises = [
@@ -185,7 +218,24 @@ class GameManager:
             {'name': 'Crunches', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Core'},
             {'name': 'Jumping Lunges', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Lower'},
             {'name': 'Burpees', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Upper'},
-            {'name': 'Twisting Mountain Climbers', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Core'}
+            {'name': 'Twisting Mountain Climbers', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Core'},
+            {'name': 'Side Planks (each side)', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Core'},
+            {'name': 'Hanging Knee Raises', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Core'},
+            {'name': 'Wall-Supported Handstand Hold', 'difficulty': 'Difficult', 'base_xp': 1, 'base_coin': 0, 'workout_type': 'Upper'},
+            {'name': 'Bird-Dog', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Glute Bridges', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Superman', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Dead Bug', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Flutter Kicks', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Calf Raises (controlled)', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Wall Sits (short hold)', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Scapular Pushups', 'difficulty': 'Mediocre', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Pillow Squeezes (inner thigh)', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'},
+            {'name': 'Pelvic Tilts', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Knee Rolls (supine)', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Core'},
+            {'name': 'Thoracic Rotations (seated)', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Full'},
+            {'name': 'Gentle Neck Tilts', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Upper'},
+            {'name': 'Ankle Dorsiflexion/Plantarflexion', 'difficulty': 'Easy', 'base_xp': 0, 'base_coin': 1, 'workout_type': 'Lower'}
         ]
 
         # Consolidated physical exercises for random selection
@@ -205,17 +255,16 @@ class GameManager:
         }
 
         self.side_quest_templates = [
-            {'name': 'Tidy Up', 'description': 'Clean your personal room or workspace.', 'xp_reward': 5, 'coin_reward': 2},
-            {'name': 'Healthy Meal', 'description': 'Cook a healthy and nutritious breakfast.', 'xp_reward': 5, 'coin_reward': 3},
+            {'name': 'Healthy Meal', 'description': 'Cook a healthy and nutritious breakfast.', 'xp_reward': 3, 'coin_reward': 3},
             {'name': 'Hydration', 'description': 'Drink 8 glasses of water throughout the day.', 'xp_reward': 3, 'coin_reward': 1},
-            {'name': 'Quick Stretch', 'description': 'Take 10 minutes to stretch your body.', 'xp_reward': 3, 'coin_reward': 1},
-            {'name': 'Mindful Moment', 'description': 'Meditate for 5 minutes without distractions.', 'xp_reward': 4, 'coin_reward': 2},
-            {'name': 'Read a Little', 'description': 'Read 10 pages of any book.', 'xp_reward': 5, 'coin_reward': 2},
-            {'name': 'Plan Tomorrow', 'description': 'Outline your top 3 priorities for the next day.', 'xp_reward': 4, 'coin_reward': 2},
-            {'name': 'Quick Workout', 'description': 'Do 15 minutes of light exercise (e.g., walking).', 'xp_reward': 6, 'coin_reward': 3},
-            {'name': 'Declutter Digital', 'description': 'Clean up your computer desktop or phone apps.', 'xp_reward': 4, 'coin_reward': 2},
+            {'name': 'Quick Stretch', 'description': 'Take 10 minutes to stretch your body.', 'xp_reward': 1, 'coin_reward': 1},
+            {'name': 'Mindful Moment', 'description': 'Meditate for 5 minutes without distractions.', 'xp_reward': 3, 'coin_reward': 2},
+            {'name': 'Read a Little', 'description': 'Read 10 pages of any book.', 'xp_reward': 1, 'coin_reward': 2},
+            {'name': 'Plan Tomorrow', 'description': 'Outline your top 3 priorities for the next day.', 'xp_reward': 2, 'coin_reward': 2},
+            {'name': 'Quick Workout', 'description': 'Do 15 minutes of light exercise (e.g., walking).', 'xp_reward': 2, 'coin_reward': 3},
+            {'name': 'Declutter Digital', 'description': 'Clean up your computer desktop or phone apps.', 'xp_reward': 1, 'coin_reward': 2},
             {'name': 'Learn a New Word', 'description': 'Learn and use a new vocabulary word today.', 'xp_reward': 3, 'coin_reward': 1},
-            {'name': 'Express Gratitude', 'description': 'Tell someone you appreciate them.', 'xp_reward': 5, 'coin_reward': 3}
+            {'name': 'Express Gratitude', 'description': 'Tell someone you appreciate them.', 'xp_reward': 1, 'coin_reward': 3}
         ]
 
         self.daily_task_templates = [
@@ -444,39 +493,74 @@ class GameManager:
                 return level['xp_required'] - self.player.xp
         return "Max Level Reached"
 
-    def add_xp(self, amount, is_quest=False):
+    def add_xp(self, base_amount, is_quest=False):
+        """
+        Adds XP to the player, applying various multipliers and pending boosts.
+        base_amount: The raw XP amount before any multipliers.
+        is_quest: Boolean, True if the XP is from completing a quest.
+        """
+        print(f"--- add_xp DEBUG START ---")
+        print(f"Initial base_amount: {base_amount}, is_quest: {is_quest}, Current XP: {self.player.xp}")
+
         if self._apply_corruption_failure():
+            print(f"Corruption failure applied. No XP gained.")
             return "Your laziness gets the better of you... No XP gained due to corruption."
 
-        amount = int(amount) # Ensure amount is an integer
+        calculated_amount = int(base_amount) # Start with base amount
+        print(f"Calculated amount (initial from base_amount): {calculated_amount}")
 
+        # Apply title multipliers
         if self.player.active_title == 'Prodigy':
-            amount = int(amount * 1.1)
+            calculated_amount = int(calculated_amount * 1.1)
+            print(f"After Prodigy (1.1x): {calculated_amount}")
         if self.player.active_title == 'Legendary Quester' and is_quest:
-            amount = int(amount * 1.05)
+            calculated_amount = int(calculated_amount * 1.05)
+            print(f"After Legendary Quester (1.05x, quest): {calculated_amount}")
 
         # Apply gear buffs
-        gear_buff = self._get_gear_buff('xp_gain')
-        amount = int(amount * (1 + gear_buff))
+        gear_xp_buff = self._get_gear_buff('xp_gain')
+        calculated_amount = int(calculated_amount * (1 + gear_xp_buff))
+        print(f"After gear buff ({1 + gear_xp_buff}x): {calculated_amount}")
 
-        original_xp = self.player.xp
+        # Apply transcendence buff (XP Multiplier Potion effect)
         if self.player.transcendence_buff_end_time:
             try:
-                if datetime.datetime.now() < datetime.datetime.fromisoformat(self.player.transcendence_buff_end_time):
-                    amount *= 2
-            except (ValueError, TypeError):
+                end_time = datetime.datetime.fromisoformat(self.player.transcendence_buff_end_time)
+                if datetime.datetime.now() < end_time:
+                    calculated_amount *= 2
+                    print(f"After Transcendence buff (2x): {calculated_amount}")
+                else:
+                    print(f"Transcendent buff expired. Not applied.")
+            except (ValueError, TypeError) as e:
+                print(f"Error parsing transcendence_buff_end_time: {e}. Not applied.")
                 pass
 
-        self.player.xp += amount
-        if self.player.xp_boost_pending > 0:
-            boost_amount = self.player.xp_boost_pending
-            self.player.xp += boost_amount
-            self.player.xp_boost_pending = 0
-            print(f"Applied XP boost! Gained an additional {boost_amount} XP.")
+        # Store original XP before adding any new XP for level up check
+        original_xp_for_level_check = self.player.xp
 
-        self._check_for_level_up(original_xp, self.player.xp)
-        print(f"Gained {amount} XP. Current XP: {self.player.xp}")
-        return None
+        self.player.xp += calculated_amount
+        print(f"XP added from base/multipliers: {calculated_amount}. Current XP: {self.player.xp}")
+
+        # Apply pending XP boost *after* all other calculations
+        # Note: In current implementation, 'Small XP Boost' directly adds XP in purchase_cart,
+        # so xp_boost_pending will likely remain 0 unless set elsewhere.
+        boost_amount_applied = 0
+        if self.player.xp_boost_pending > 0:
+            boost_amount_applied = self.player.xp_boost_pending
+            self.player.xp += boost_amount_applied
+            self.player.xp_boost_pending = 0
+            print(f"Applied pending XP boost: {boost_amount_applied} XP. Final XP: {self.player.xp}")
+        else:
+            print(f"xp_boost_pending is 0. No additional boost applied.")
+
+        # Pass the XP before this gain, and current XP for level up check
+        self._check_for_level_up(original_xp_for_level_check, self.player.xp)
+        
+        # Report the total XP gained from this call (calculated_amount + boost_amount_applied)
+        total_gained_this_call = calculated_amount + boost_amount_applied
+        print(f"Total XP gained this call: {total_gained_this_call} XP. Current total XP: {self.player.xp}")
+        print(f"--- add_xp DEBUG END ---")
+        return None # Return None as before, messages are printed
 
     def _check_for_level_up(self, old_xp, new_xp):
         sorted_levels = sorted(self.levels_data, key=lambda x: x['xp_required'])
@@ -684,10 +768,14 @@ class GameManager:
             }
 
             if skill_type in ["Strength", "Durability"]:
+                # --- Strength and Durability Reward Calculation ---
                 total_reps = sets * reps
+                # Scale reward based on total reps, maxing out at 100 reps for scale factor of 1.0
                 reward_scale_factor = min(1.0, total_reps / 100.0)
+                # Base XP and Coin for Strength/Durability are scaled up significantly
                 base_xp = exercise.get('base_xp', 0) * 10
                 base_coin = exercise.get('base_coin', 0) * 5
+                
                 xp_reward = math.ceil(base_xp * reward_scale_factor)
                 coin_reward = math.ceil(base_coin * reward_scale_factor)
                 skill_xp_reward = math.ceil((base_xp * 2) * reward_scale_factor)
@@ -701,22 +789,29 @@ class GameManager:
                     'skill_reward': {'skill': skill_type, 'amount': skill_xp_reward},
                     'workout_type': exercise.get('workout_type')
                 }
-                base_quest['steps'] = f"1. Perform {sets} sets of {reps} reps of {exercise['name']}.\n2. Mark quest as complete."
+                base_quest['steps'] = f"1. Perform {sets} sets of {reps} reps of {exercise['name']}.\n2. Adjust weight/variation for difficulty.\n3. Mark quest as complete."
 
             elif skill_type == "Endurance":
+                # --- CORRECTED Endurance Reward Calculation ---
                 difficulty_multiplier = {'Easy': 1.0, 'Mediocre': 1.2, 'Difficult': 1.5, 'Very Difficult': 2.0}.get(difficulty, 1.0)
-                base_xp_per_min = exercise.get('base_xp', 1) * 0.5 * difficulty_multiplier
-                base_coin_per_min = exercise.get('base_coin', 1) * 0.25 * difficulty_multiplier
-                xp_reward_full = math.ceil(base_xp_per_min * duration * 10)
-                coin_reward_full = math.ceil(base_coin_per_min * duration * 5)
+                
+                # REVISED: XP and Coin per minute are calculated based on exercise's base values and difficulty
+                # These small multipliers keep the rewards balanced.
+                base_xp_per_min = exercise.get('base_xp', 0) * 0.5 * difficulty_multiplier
+                base_coin_per_min = exercise.get('base_coin', 0) * 0.25 * difficulty_multiplier
+                
+                # The total reward is now correctly multiplied by the DURATION of the exercise
+                xp_reward = math.ceil(base_xp_per_min * duration/30)
+                coin_reward = math.ceil(base_coin_per_min * duration/60)
+                skill_xp_reward = math.ceil(xp_reward * 0.25) # Skill XP is a fraction of the total XP reward
 
                 quest_name = f"Endurance: {exercise['name']} ({duration} mins)"
                 quest = {
                     'name': quest_name,
                     'description': f"Part of your {difficulty} Endurance workout plan.",
-                    'xp_reward': xp_reward_full,
-                    'coin_reward': coin_reward_full,
-                    'skill_reward': {'skill': skill_type, 'amount': math.ceil(xp_reward_full * 0.5)},
+                    'xp_reward': xp_reward,
+                    'coin_reward': coin_reward,
+                    'skill_reward': {'skill': skill_type, 'amount': skill_xp_reward},
                     'duration_target': duration,
                 }
                 base_quest['steps'] = f"1. Perform {exercise['name']} for {duration} minutes.\n2. Mark quest as complete and enter duration completed."
@@ -802,7 +897,9 @@ class GameManager:
                 self.save_game()
                 return "Your laziness gets the better of you... No rewards gained due to corruption."
 
-            is_main = quest.get('quest_type') == 'main'
+            is_main = quest.get('quest_type') != 'side'
+            is_side = quest.get('quest_type') == 'side'
+
             xp_reward = int(quest.get('xp_reward', 0))
             coin_reward = int(quest.get('coin_reward', 0))
             skill_info = quest.get('skill_reward', {})
@@ -827,8 +924,21 @@ class GameManager:
                 self.gain_skill_points(skill_info['skill'], skill_info['amount'])
 
             self.player.quests.remove(quest)
+            
+            # --- SANITY and MAIN QUEST COUNTER LOGIC ---
+            message_sanity = ""
             if is_main:
                 self.player.main_quests_completed += 1
+                self.player.sanity = max(0, self.player.sanity - 2)
+                message_sanity = "\nYour psyche strains under the weight of your goals. Sanity -2."
+            elif is_side:
+                if quest['name'] not in self.player.completed_side_quests_today:
+                    self.player.sanity = min(100, self.player.sanity + 1)
+                    self.player.completed_side_quests_today.append(quest['name'])
+                    message_sanity = "\nA small victory clears your mind. Sanity +1."
+                else:
+                    message_sanity = "\nThis task feels routine now, offering no further clarity."
+            # --- END SANITY LOGIC ---
 
             self.increment_daily_tasks()
 
@@ -843,6 +953,8 @@ class GameManager:
                 message += f"\nHowever, {xp_msg or coin_msg}"
             else:
                  message += f" You earned {xp_reward} XP and {coin_reward} coins."
+            
+            message += message_sanity # Add sanity message
 
             if is_main and random.random() < 0.1:
                 unlocked_title_msg = self._unlock_random_title()
@@ -936,7 +1048,9 @@ class GameManager:
             if item_data:
                 # Apply effect for the total quantity purchased
                 if item_data['effect'] == 'xp_boost':
-                    self.add_xp(item_data['amount'] * quantity)
+                    # Directly add XP for 'Small XP Boost' without applying multipliers
+                    self.player.xp += item_data['amount'] * quantity
+                    purchase_summary.append(f"{quantity}x {item_name} (Direct XP Gain: {item_data['amount'] * quantity})")
                 elif item_data['effect'] == 'add_coins':
                     self.add_coins(item_data['amount'] * quantity)
                 elif item_data['effect'] == 'add_pet_food':
@@ -1066,18 +1180,26 @@ class GameManager:
             days_passed = (today - last_reset_date).days
             decay_message = self._decay_skills(days_passed)
 
-            # Check daily streak
-            if self.player.daily_tasks_completed >= 5: # Threshold for maintaining streak
-                self.player.daily_streak += 1
-                message += "Daily streak maintained!\n"
+            # --- NEW CORRUPTION AND STREAK LOGIC ---
+            streak_threshold = 5 
+            total_possible_tasks = len(self.daily_task_templates)
+            tasks_completed = self.player.daily_tasks_completed
+            tasks_missed = total_possible_tasks - tasks_completed
+
+            if tasks_completed >= streak_threshold:
+                self.player.daily_streak += days_passed
+                message += f"Daily streak maintained and is now {self.player.daily_streak}!\n"
             else:
                 # Diligent title effect
-                if self.player.active_title == 'Diligent' and random.random() < 0.2: # 20% chance to not reset
+                if self.player.active_title == 'Diligent' and random.random() < 0.2:
                     message += "Your diligence saved your streak this time!\n"
                 else:
                     self.player.daily_streak = 0
-                    self.player.corruption += 5 * days_passed # Increased corruption for missing days
-                    message += f"Daily streak reset! You gained {5 * days_passed} corruption.\n"
+                    if tasks_missed > 0:
+                        self.player.corruption += tasks_missed
+                        message += f"Daily streak reset! You missed {tasks_missed} tasks and gained {tasks_missed} corruption.\n"
+                    else:
+                        message += "Daily streak reset!\n"
 
             self.player.daily_tasks_completed = 0
             self.player.daily_tasks = {} # Reset daily tasks
@@ -1131,6 +1253,7 @@ class GameManager:
         if is_complete:
             xp_change = 1 # Small XP for daily task
             coin_change = 1 # Small Coins for daily task
+            # Call add_xp with base_amount=xp_change
             self.add_xp(xp_change)
             self.add_coins(coin_change)
             self.increment_daily_tasks()
@@ -1334,12 +1457,14 @@ class GameManager:
 
         if self.player.daily_tasks_completed >= 7 and 'daily_master' not in self.player.achievements:
             self.player.achievements.append('daily_master')
+            # Call add_xp with base_amount=100
             self.add_xp(100)
             if 'Diligent' not in self.player.unlocked_titles:
                 self.player.unlocked_titles.append('Diligent')
 
         if self.player.corruption <= 0 and self._check_corruption_was_high() and 'corruption_cleanse' not in self.player.achievements:
             self.player.achievements.append('corruption_cleanse')
+            # Call add_xp with base_amount=200
             self.add_xp(200)
 
         # Check for Forge Apprentice and Master Crafter
@@ -1638,3 +1763,5 @@ class GameManager:
 
         self.save_game()
         return f"Successfully sold {item_name} for {sell_price} coins!"
+
+# complete_quest

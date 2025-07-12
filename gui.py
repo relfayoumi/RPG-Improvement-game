@@ -137,7 +137,7 @@ GLOBAL_STYLESHEET = """
     }
     QListWidget::item {
         padding: 5px;
-        border-bottom: 1px solid #f0f0f0; /* Subtle separator */
+        "border-bottom: 1px solid #f0f0f0; /* Subtle separator */"
     }
     QListWidget::item:selected {
         background-color: #e6f7e6; /* Light green for selected item */
@@ -448,6 +448,7 @@ class GameGUI(QWidget): # Changed from QMainWindow to QWidget to fit into the co
         self.xp_label = QLabel()
         self.coins_label = QLabel()
         self.punishment_label = QLabel()
+        self.sanity_label = QLabel() # NEW
         self.daily_tasks_completed_label = QLabel()
         self.xp_boost_label = QLabel()
         self.coin_multiplier_label = QLabel()
@@ -456,7 +457,7 @@ class GameGUI(QWidget): # Changed from QMainWindow to QWidget to fit into the co
         # Apply bold font to all stat labels
         font_bold = QFont("Segoe UI", 10, QFont.Bold)
         for label in [self.title_label, self.level_label, self.xp_label, self.coins_label,
-                       self.punishment_label, self.daily_tasks_completed_label,
+                       self.punishment_label, self.sanity_label, self.daily_tasks_completed_label,
                        self.xp_boost_label, self.coin_multiplier_label, self.punishment_mitigation_label]:
             label.setFont(font_bold)
             label.setStyleSheet("color: #2c3e50;") # Darker color for stats
@@ -466,10 +467,11 @@ class GameGUI(QWidget): # Changed from QMainWindow to QWidget to fit into the co
         stats_layout.addWidget(self.xp_label, 1, 0)
         stats_layout.addWidget(self.coins_label, 1, 1)
         stats_layout.addWidget(self.punishment_label, 2, 0)
-        stats_layout.addWidget(self.daily_tasks_completed_label, 2, 1)
-        stats_layout.addWidget(self.xp_boost_label, 3, 0)
-        stats_layout.addWidget(self.coin_multiplier_label, 3, 1)
-        stats_layout.addWidget(self.punishment_mitigation_label, 4, 0, 1, 2)
+        stats_layout.addWidget(self.sanity_label, 2, 1) # ADDED
+        stats_layout.addWidget(self.daily_tasks_completed_label, 3, 0)
+        stats_layout.addWidget(self.xp_boost_label, 3, 1)
+        stats_layout.addWidget(self.coin_multiplier_label, 4, 0)
+        stats_layout.addWidget(self.punishment_mitigation_label, 4, 1)
 
     def _update_player_stats_display(self):
         player = self.game_manager.player
@@ -478,6 +480,7 @@ class GameGUI(QWidget): # Changed from QMainWindow to QWidget to fit into the co
         self.xp_label.setText(f"⚡️ <b>XP:</b> {player.xp}")
         self.coins_label.setText(f"💰 <b>Coins:</b> {player.coins}")
         self.punishment_label.setText(f"💀 <b>Punishment:</b> {player.punishment_sum}")
+        self.sanity_label.setText(f"🧠 <b>Sanity:</b> {player.sanity}")
         self.xp_boost_label.setText(f"🚀 <b>XP Boost Pending:</b> {player.xp_boost_pending}")
         self.coin_multiplier_label.setText(f"📈 <b>Coin Multiplier:</b> {player.coin_gain_multiplier:.1f}x")
         self.punishment_mitigation_label.setText(f"🛡️ <b>Punishment Mitigation:</b> {'Yes' if player.punishment_mitigation_pending else 'No'}")
@@ -1237,7 +1240,7 @@ class GameGUI(QWidget): # Changed from QMainWindow to QWidget to fit into the co
         if selected_item and selected_item.data(Qt.UserRole):
             quest = selected_item.data(Qt.UserRole)
             self.details_title.setText(f"<h3>{quest['name']}</h3>")
-            rewards = f"⚡️ {quest.get('xp_reward', 0)} XP, � {quest.get('coin_reward', 0)} Coins"
+            rewards = f"⚡️ {quest.get('xp_reward', 0)} XP, 💰 {quest.get('coin_reward', 0)} Coins"
             if quest.get('skill_reward'):
                 rewards += f", ⭐ +{quest['skill_reward']['amount']} {quest['skill_reward']['skill']} XP"
             self.details_rewards_label.setText(rewards)
